@@ -12,13 +12,32 @@ import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 
-public class Test5 {
-    // Assistant conversationnel
+import java.util.Scanner;
+
+public class Test6 {
     interface Assistant {
         // Prend un message de l'utilisateur et retourne une réponse du LLM.
         String chat(String userMessage);
     }
-
+    private static void conversationAvec(Assistant assistant) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (true) {
+                System.out.println("==================================================");
+                System.out.println("Posez votre question : ");
+                String question = scanner.nextLine();
+                if (question.isBlank()) {
+                    continue;
+                }
+                System.out.println("==================================================");
+                if ("fin".equalsIgnoreCase(question)) {
+                    break;
+                }
+                String reponse = assistant.chat(question);
+                System.out.println("Assistant : " + reponse);
+                System.out.println("==================================================");
+            }
+        }
+    }
     public static void main(String[] args) {
         String llmKey = System.getenv("GEMINI_API_KEY2");
         if (llmKey == null) {
@@ -36,7 +55,7 @@ public class Test5 {
                 .build();
 
         // Chargement du document, sous la forme d'embeddings, dans une base vectorielle en mémoire
-        String nomDocument = "infos.txt";
+        String nomDocument = "mlMBDS2526.pdf";
         Document document = FileSystemDocumentLoader.loadDocument(nomDocument);
         EmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
         // Calcule les embeddings et les enregistre dans la base vectorielle
@@ -52,15 +71,14 @@ public class Test5 {
                         .chatMemory(MessageWindowChatMemory.withMaxMessages(10))
                         .contentRetriever(EmbeddingStoreContentRetriever.from(embeddingStore))
                         .build();
-
+        Test6.conversationAvec(assistant);
         // Le LLM va utiliser l'information du fichier infos.txt pour répondre à la question.
-        String question = "Quelle est la capitale de la France?";
+        //String question = "Quelle est la capitale de la France?";
         // L'assistant recherche dans la base vectorielle les informations les plus pertinentes
         // pour répondre à la question, en comparant les embeddings de la base et celui de la question.
         // Ces informations sont ajoutées à la question et le tout est envoyé au LLM.
-        String reponse = assistant.chat(question);
+        //String reponse = assistant.chat(question);
         // Affiche la réponse du LLM.
-        System.out.println(reponse);
+        //System.out.println(reponse);
     }
-
 }
