@@ -22,7 +22,7 @@ public class Test5 {
     public static void main(String[] args) {
         String llmKey = System.getenv("GEMINI_API_KEY2");
         if (llmKey == null) {
-            System.out.println("La variable d'environnement GEMINI_KEY n'est pas définie.");
+            System.out.println("La variable d'environnement GEMINI_API_KEY2 n'est pas définie.");
             return;
         }
 

@@ -19,7 +19,7 @@ public class Test6 {
         // Prend un message de l'utilisateur et retourne une réponse du LLM.
         String chat(String userMessage);
     }
-    private static void conversationAvec(Assistant assistant) {
+    public static void conversationAvec(Assistant assistant) {
         try (Scanner scanner = new Scanner(System.in)) {
             while (true) {
                 System.out.println("==================================================");
@@ -41,7 +41,7 @@ public class Test6 {
     public static void main(String[] args) {
         String llmKey = System.getenv("GEMINI_API_KEY2");
         if (llmKey == null) {
-            System.out.println("La variable d'environnement GEMINI_KEY n'est pas définie.");
+            System.out.println("La variable d'environnement GEMINI_API_KEY2 n'est pas définie.");
             return;
         }
 
